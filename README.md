@@ -53,3 +53,104 @@ To avoid having to type your password in all the time, add an SSH key to your Gi
 ### AWS CLI
 https://docs.aws.amazon.com/cli/latest/index.html
 
+
+#### Create IAM user
+* Create user
+* Download the csv!
+* Create group `serverless-admin` & attach policies: `AWSLambdaFullAccess`, `AmazonAPIGatewayAdministrator`
+* Create group `iam-admin` & attach policies: `IAMFullAccess`
+* Add user to groups
+* Create a password for the user
+* * Note the web console sign-in link
+* Sign out, then sign in as that user
+
+#### Configure AWS CLI
+> `$ aws2 configure` \
+Credentials from CSV \
+Region: us-west-2 \
+Output: yaml \
+
+>verify: \
+`$ aws2 sts get-caller-identity`
+
+#### Set up IAM Role
+>Create role (generate skeleton): \
+`$ aws2 iam create-role --generate-cli-skeleton yaml-input > cli/iam-create-role.yaml` \
+then, edit those values
+
+>Create role (run command): \
+`$ aws2 iam create-role --cli-input-yaml file://cli/iam-create-role.yaml` \
+note: file path is relative to working directory
+
+note: `iam-trust-relationship.json` (pre-existing in this repo) says "this role can be assumed by Lambdas"
+
+> Attach policies (generate skeleton): \
+`$ aws2 iam attach-role-policy --generate-cli-skeleton yaml-input > cli/iam-attach-role-policy.yaml` \
+note: Always edit the values that get spit out by these "generate skeleton" commands
+
+> Attach policies(run command): \
+`$ aws2 iam attach-role-policy --cli-input-yaml file://cli/iam-attach-role-policy.yaml`
+
+#### Package & bundle our code
+>`$ npm install` \
+`$ npm run-script bundle`
+
+note: Further explanation of this step is available on demand. 
+
+#### Set up S3
+>Create bucket (generate skeleton): \
+`$ aws2 s3api create-bucket --generate-cli-skeleton yaml-input > cli/s3api-create-bucket.yaml` \
+note: s3 bucket name uniqueness
+
+>Create bucket (run command): \
+`$ aws2 s3api create-bucket --cli-input-yaml file://cli/s3api-create-bucket.yaml`
+
+>Upload code (run command): \
+`$ aws2 s3 cp dist/bundle.zip s3://serverless-workshop-prime/bundle.zip` \
+note: change s3 bucket name
+
+#### Create our Lambda!
+>Create Lambda (generate skeleton): \
+`$ aws2 lambda create-function --generate-cli-skeleton yaml-input > cli/lmabda-create-function.yaml`
+
+>Create Lambda (run command) \
+`$ aws2 lambda create-function --cli-input-yaml file://cli/lambda-create-function.yaml` \
+note: differences in web docs vs "live docs" in the CLI!
+
+#### Create API Gateway resource
+
+note: There's this exciting new "HTTP Gateway" that's in beta, but it was buggy so we're using a REST API.
+
+note: I noped out of getting CLI input working for setting up API Gateway. It's...complex. And full of weird legacy things with inconsistent documentation. So we're going to use the AWS web console, which you should learn about anyway. Just do yourself a favor and learn about Swagger / OpenApi formats sometime.
+
+auth: demo authorizer
+
+#### Point your REST client at it!
+
+#### Testing
+> Running our automated tests \
+`$ npm run-script test` 
+useful: https://scotch.io/tutorials/how-to-test-nodejs-apps-using-mocha-chai-and-sinonjs
+> **Unit vs Integration tests** \
+Unit tests are generally the way to go: Mocking via Sinon \
+Integration tests -- good news is AWS SDK picks up your local credentials we set up upthread, so you can do all kinds of cool stuff as far as invoking other AWS services without doing any more work
+
+### Closing thoughts
+
+On this free tier with (currently) no authentication, it's a best practice to delete any deployment stages when you're not actively working on it so that you protect your AWS account from the incredibly unlikely case of some robot finding your endpoint and banging on it until it manages to actually cost you money.
+
+Verifying behavior via test is *often* a better workflow than actually publishing and invoking the lambda. Yes, AWS SAM exists and provides a Lambda-like local environment in which to run your Lambda, but it sucks in basically every way a workflow can suck and I don't recommend it.
+
+### Bonus content
+#### Update/deploy script
+`$ aws2 lambda update-function-code --generate-cli-skeleton yaml-input > cli/lambda-update-function-code.yaml`
+
+`$ aws2 lambda update-function-code --cli-input-yaml file://cli/lambda-update-function-code.yaml`
+
+`$ aws2 lambda update-function-configuration --generate-cli-skeleton yaml-input > cli/lambda-update-function-configuration.yaml`
+
+`$ aws2 lambda update-function-configuration --cli-input-yaml file://cli/lambda-update-function-configuration.yaml`
+
+`$ ./scripts/build-deploy.sh`
+
+todo: advanced deploy script (error handling)

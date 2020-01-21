@@ -1,0 +1,8 @@
+FunctionName: 'serverless-demo'  # [REQUIRED] The name of the Lambda function.
+# ZipFile: !!binary '' # The base64-encoded contents of the deployment package.
+S3Bucket: 'serverless-workshop-prime' # An Amazon S3 bucket in the same AWS Region as your function.
+S3Key: 'bundle.zip' # The Amazon S3 key of the deployment package.
+# S3ObjectVersion: '' # For versioned objects, the version of the deployment package object to use.
+# Publish: true # Set to true to publish a new version of the function after updating the code.
+# DryRun: true # Set to true to validate the request parameters and access permissions without modifying the function code.
+# RevisionId: '' # Only update the function if the revision ID matches the ID that's specified.
