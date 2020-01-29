@@ -17,4 +17,8 @@ Description: 'Lazily created role that has full access to Lambda, S3, CloudWatch
 # PermissionsBoundary: '' # The ARN of the policy that is used to set the permissions boundary for the role.
 Tags: # A list of tags that you want to attach to the newly created role.
 - Key: 'project'  # [REQUIRED] The key name that can be used to look up or retrieve the associated value.
+<<<<<<< HEAD
   Value: 'serverless-workshop' # [REQUIRED] The value associated with this tag.
+=======
+  Value: 'serverless-workshop' # [REQUIRED] The value associated with this tag.
+>>>>>>> 7d431c9b1d76c829f93753911e38aaa2b77c1b5e

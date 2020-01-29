@@ -1,0 +1,23 @@
+FunctionName: 'serverless-demo'  # [REQUIRED] The name of the Lambda function.
+# Role: '' # The Amazon Resource Name (ARN) of the function's execution role.
+# Handler: '' # The name of the method within your code that Lambda calls to execute your function.
+# Description: '' # A description of the function.
+# Timeout: 0 # The amount of time that Lambda allows a function to run before stopping it.
+# MemorySize: 0 # The amount of memory that your function has access to.
+# VpcConfig: # For network connectivity to AWS resources in a VPC, specify a list of security groups and subnets in the VPC.
+#   SubnetIds:  # A list of VPC subnet IDs.
+#   - ''
+#   SecurityGroupIds: # A list of VPC security groups IDs.
+#   - ''
+Environment: # Environment variables that are accessible from function code during execution.
+  Variables:  # Environment variable key-value pairs.
+    HeadersToLog: 'x-custom-auth'
+# Runtime: python3.7 # The identifier of the function's runtime. Valid values are: nodejs, nodejs4.3, nodejs6.10, nodejs8.10, nodejs10.x, nodejs12.x, java8, java11, python2.7, python3.6, python3.7, python3.8, dotnetcore1.0, dotnetcore2.0, dotnetcore2.1, nodejs4.3-edge, go1.x, ruby2.5, provided.
+# DeadLetterConfig: # A dead letter queue configuration that specifies the queue or topic where Lambda sends asynchronous events when they fail processing.
+#   TargetArn: ''  # The Amazon Resource Name (ARN) of an Amazon SQS queue or Amazon SNS topic.
+# KMSKeyArn: '' # The ARN of the AWS Key Management Service (AWS KMS) key that's used to encrypt your function's environment variables.
+# TracingConfig: # Set Mode to Active to sample and trace a subset of incoming requests with AWS X-Ray.
+#   Mode: PassThrough  # The tracing mode. Valid values are: Active, PassThrough.
+# RevisionId: '' # Only update the function if the revision ID matches the ID that's specified.
+# Layers: # A list of function layers to add to the function's execution environment.
+# - ''
