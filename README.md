@@ -1,5 +1,5 @@
 # serverless-workshop
-Starter repo for the serverless workshop run by Adam Biessener: https://github.com/abiessener/serverless-workshop-starter.
+Starter repo for the serverless workshop run by Adam Biessener: https://github.com/abiessener/serverless-workshop.
 
 This roughly two-hour workshop is a step-by-step tour of the basics of serverless compute platforms using AWS Lambda.
 
@@ -42,19 +42,39 @@ To avoid having to type your password in all the time, add an SSH key to your Gi
 
 ### What are serverless platforms?
 
+"Functions as a Service" or FaaS is basically an equivalent term
+
+Fundamentally, a serverless platform lets you create *handlers* to handle *events*. This enables *event-driven architecture* which should feel very natural to anyone who has worked with a REST API.
+
+Example: unexpected 500 error in critical service. Post to message queue -- then consume it with arbitrary functions.
+
 ### Why choose serverless?
+Deploy, scale, and update services at an even more granular level than traditional microservice architecture. Handle things like event queues quickly and naturally. Avoid being tied to "cron" (scheduled) jobs, though that's a tool available to you.
+
+Much less infrastructure to deal with -- you get a lot "for free" -- no load balancers! Let the platform holder deal with the platform; no Docker images to manage.
+
+Cost. Much cheaper than e.g. a typical EC2 setup.
 
 ### Serverless limitations
+Cold starts may need to be mitigated -- database connections in particular have some pitfalls.
+
+(AWS-specific) API Gateway in general is...complicated (but it's getting better!).
+
+Fragmentation & shared code -- there are tools to mitigate this, but it's a complication compared to traditional servers.
 
 ### Infrastructure as Code
+For the love of all that is good and right in the world, capture as much of your infrastructure in code as you possibly can. This makes everything from bug-hunting to disaster recovery to expanding services infinitely easier.
+
+Serverless means you get to skip a whole bunch of what you have to do even for a relatively simple EC2 setup, much less a complex redundant/resilient application or Kubernetes or whatever.
 
 ## Workshop Agenda
 
 ### AWS CLI
 https://docs.aws.amazon.com/cli/latest/index.html
 
-
 #### Create IAM user
+This is the hardest part! Really.
+
 * Create user
 * Download the csv!
 * Create group `serverless-admin` & attach policies: `AWSLambdaFullAccess`, `AmazonAPIGatewayAdministrator`
